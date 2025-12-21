@@ -1,0 +1,26 @@
+CREATE TABLE IF NOT EXISTS settlements (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    payment_id BIGINT NOT NULL,
+    status ENUM('PENDING', 'SETTLED', 'FAILED') NOT NULL DEFAULT 'PENDING',
+    total_amount DECIMAL(15, 2) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    INDEX idx_payment_id (payment_id),
+    INDEX idx_status (status),
+    FOREIGN KEY (payment_id) REFERENCES payments(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS settlement_splits (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    settlement_id BIGINT NOT NULL,
+    vendor_id VARCHAR(255) NOT NULL,
+    amount DECIMAL(15, 2) NOT NULL,
+    status ENUM('PENDING', 'SETTLED', 'FAILED') NOT NULL DEFAULT 'PENDING',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    INDEX idx_settlement_id (settlement_id),
+    INDEX idx_vendor_id (vendor_id),
+    FOREIGN KEY (settlement_id) REFERENCES settlements(id) ON DELETE CASCADE,
+    FOREIGN KEY (vendor_id) REFERENCES vendors(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
