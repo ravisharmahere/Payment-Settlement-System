@@ -308,7 +308,7 @@ redis-cli ping
 
 ## License
 
-ISC
+None
 
 ## Contributing
 
