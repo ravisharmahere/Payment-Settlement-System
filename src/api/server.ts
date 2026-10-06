@@ -8,8 +8,8 @@ export function createServer(): express.Application {
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
 
-  // Health check
-  app.get('/health', (req, res) => {
+  // Basic liveness checks
+  app.get(['/health', '/health-check'], (req, res) => {
     res.json({ status: 'ok', timestamp: new Date().toISOString() });
   });
 
